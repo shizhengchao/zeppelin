@@ -50,6 +50,7 @@ import org.apache.zeppelin.resource.Resource;
 import org.apache.zeppelin.resource.ResourceId;
 import org.apache.zeppelin.resource.ResourcePool;
 import org.apache.zeppelin.resource.ResourceSet;
+import org.apache.zeppelin.user.AuthenticationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -253,12 +254,16 @@ public class RemoteInterpreterEventServer implements RemoteInterpreterEventServi
     }
     interpreterGroup.getAngularObjectRegistry().add(angularObject.getName(),
         angularObject.get(), angularObject.getNoteId(), angularObject.getParagraphId());
+
     if (angularObject.getNoteId() != null) {
       try {
         Note note = interpreterSettingManager.getNotebook().getNote(angularObject.getNoteId());
-        note.addOrUpdateAngularObject(intpGroupId, angularObject);
+        if (note != null) {
+          note.addOrUpdateAngularObject(intpGroupId, angularObject);
+          interpreterSettingManager.getNotebook().saveNote(note, AuthenticationInfo.ANONYMOUS);
+        }
       } catch (IOException e) {
-        LOGGER.warn("Fail to get note: " + angularObject.getNoteId(), e);
+        LOGGER.error("Fail to get note: {}", angularObject.getNoteId());
       }
     }
   }
@@ -284,9 +289,12 @@ public class RemoteInterpreterEventServer implements RemoteInterpreterEventServi
     if (angularObject.getNoteId() != null) {
       try {
         Note note = interpreterSettingManager.getNotebook().getNote(angularObject.getNoteId());
-        note.addOrUpdateAngularObject(intpGroupId, angularObject);
+        if (note != null) {
+          note.addOrUpdateAngularObject(intpGroupId, angularObject);
+          interpreterSettingManager.getNotebook().saveNote(note, AuthenticationInfo.ANONYMOUS);
+        }
       } catch (IOException e) {
-        LOGGER.warn("Fail to get note: " + angularObject.getNoteId(), e);
+        LOGGER.error("Fail to get note: {}", angularObject.getNoteId());
       }
     }
   }
