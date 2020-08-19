@@ -19,6 +19,7 @@
 package org.apache.zeppelin.client;
 
 import kong.unirest.GetRequest;
+import com.google.gson.JsonObject;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -83,7 +84,7 @@ public class ZeppelinClient {
    * @param response
    * @throws Exception
    */
-  private void checkResponse(HttpResponse<JsonNode> response) throws Exception {
+  private void checkResponse(HttpResponse response) throws Exception {
     if (response.getStatus() != 200) {
       throw new Exception(String.format("Unable to call rest api, status: %s, statusText: %s, message: %s",
               response.getStatus(),
@@ -129,14 +130,14 @@ public class ZeppelinClient {
    * @throws Exception
    */
   public String newSession(String interpreter) throws Exception {
-    HttpResponse<JsonNode> response = Unirest
+    HttpResponse<String> response = Unirest
             .post("/session/{interpreter}")
             .routeParam("interpreter", interpreter)
-            .asJson();
+            .asString();
+
     checkResponse(response);
-    JsonNode jsonNode = response.getBody();
-    checkJsonNodeStatus(jsonNode);
-    return jsonNode.getObject().getString("message");
+    JSONObject jsonObject = new JSONObject(response.getBody());
+    return jsonObject.getString("message");
   }
 
   /**

@@ -12,4 +12,5 @@ public class Test {
     List<SessionResult> sessionResultList = zeppelinClient.listSessions();
     System.out.println(StringUtils.join("\n", sessionResultList));
   }
+
 }

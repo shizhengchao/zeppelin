@@ -469,29 +469,5 @@ public class ZSession {
   }
 
   public static void main(String[] args) throws Exception {
-
-    ClientConfig clientConfig = new ClientConfig("http://localhost:8080", 1000);
-//    ZSession hiveSession = new ZSession(clientConfig, "hive", new HashMap<>(), 100);
-//    hiveSession.start();
-//
-//    ExecuteResult executeResult = hiveSession.submit("show tables");
-//    executeResult = hiveSession.waitUntilFinished(executeResult.getStatementId());
-//    System.out.println(executeResult.toString());
-//
-//    executeResult = hiveSession.submit("select eid, count(1) from employee group by eid");
-//    executeResult = hiveSession.waitUntilFinished(executeResult.getStatementId());
-//    System.out.println(executeResult.toString());
-
-    ZSession sparkSession = ZSession.createFromExistingSession(clientConfig, "hive", "hive_1598418780469");
-    ExecuteResult executeResult = sparkSession.execute("show databases");
-    System.out.println(executeResult);
-
-//    ExecuteResult executeResult = sparkSession.submit("sql", "show tables");
-//    executeResult = sparkSession.waitUntilFinished(executeResult.getStatementId());
-//    System.out.println(executeResult.toString());
-//
-//    executeResult = sparkSession.submit("sql", "select eid, count(1) from employee group by eid");
-//    executeResult = sparkSession.waitUntilFinished(executeResult.getStatementId());
-//    System.out.println(executeResult.toString());
   }
 }
