@@ -772,5 +772,4 @@ public class ZeppelinClient {
       Thread.sleep(clientConfig.getQueryInterval());
     }
   }
-
 }
