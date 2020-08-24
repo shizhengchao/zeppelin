@@ -123,12 +123,6 @@ public class ZeppelinWebSocketClient {
     return connectLatch;
   }
 
-  public void stop() throws Exception {
-    if (this.wsClient != null) {
-      this.wsClient.stop();
-    }
-  }
-
   public static void main(String[] args) throws Exception {
     String dest = "ws://localhost:18086/ws";
     WebSocketClient client = new WebSocketClient();

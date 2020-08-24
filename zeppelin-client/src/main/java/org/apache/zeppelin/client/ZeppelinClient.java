@@ -84,7 +84,7 @@ public class ZeppelinClient {
    * @param response
    * @throws Exception
    */
-  private void checkResponse(HttpResponse response) throws Exception {
+  private void checkResponse(HttpResponse<JsonNode> response) throws Exception {
     if (response.getStatus() != 200) {
       throw new Exception(String.format("Unable to call rest api, status: %s, statusText: %s, message: %s",
               response.getStatus(),
@@ -130,13 +130,13 @@ public class ZeppelinClient {
    * @throws Exception
    */
   public String newSession(String interpreter) throws Exception {
-    HttpResponse<String> response = Unirest
+    HttpResponse<JsonNode> response = Unirest
             .post("/session/{interpreter}")
             .routeParam("interpreter", interpreter)
-            .asString();
+            .asJson();
 
     checkResponse(response);
-    JSONObject jsonObject = new JSONObject(response.getBody());
+    JSONObject jsonObject = response.getBody().getObject();
     return jsonObject.getString("message");
   }
 
